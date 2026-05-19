@@ -80,6 +80,7 @@ const ICONS = {
   book:     ["M4 19.5A2.5 2.5 0 0 1 6.5 17H20","M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"],
   wifi:     ["M5 12.55a11 11 0 0 1 14.08 0","M1.42 9a16 16 0 0 1 21.16 0","M8.53 16.11a6 6 0 0 1 6.95 0","M12 20h.01"],
   db:       ["M12 2a9 3 0 1 0 0 6A9 3 0 0 0 12 2z","M3 5v14a9 3 0 0 0 18 0V5","M3 12a9 3 0 0 0 18 0"],
+  play:     ["M5 3l14 9-14 9V3z"],
 };
 
 function Icon({ d, size = 20, color = "currentColor", strokeWidth = 1.7 }) {
@@ -106,7 +107,7 @@ function GlobalBackground() {
     const COUNT = window.innerWidth < 768 ? 35 : 65;
     const MAX_DIST = window.innerWidth < 768 ? 80 : 120;
     const IS_MOBILE = window.innerWidth < 768;
-    const DPR = Math.min(window.devicePixelRatio, IS_MOBILE ? 1.5 : 2); // Limita DPR em mobile
+    const DPR = Math.min(window.devicePixelRatio, IS_MOBILE ? 1.5 : 2);
 
     let W, H, animId, scanY = 200, t = 0;
     let pts = [];
@@ -142,7 +143,6 @@ function GlobalBackground() {
       for (let y = 0; y <= H; y += sz) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
       }
-      // glowing intersection dots
       for (let x = 0; x <= W; x += sz) {
         for (let y = 0; y <= H; y += sz) {
           const dist = Math.abs(y - scanY);
@@ -168,7 +168,6 @@ function GlobalBackground() {
     }
 
     function drawParticles() {
-      // connections
       for (let i = 0; i < pts.length; i++) {
         const a = pts[i];
         for (let j = i + 1; j < pts.length; j++) {
@@ -184,12 +183,10 @@ function GlobalBackground() {
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
       }
-      // dots
       for (const p of pts) {
         const pulse = Math.sin(t * 2.2 + p.ph) * 0.5 + 0.5;
         const nearScan = Math.abs(p.y - scanY) < 70;
         const alpha = 0.32 + pulse * 0.38 + (nearScan ? 0.28 : 0);
-        // outer glow when near scan
         if (nearScan) {
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r * 4.5, 0, Math.PI * 2);
@@ -308,7 +305,7 @@ function useCounter(target, duration = 1400, active = false) {
 }
 
 /* ─── REVEAL ────────────────────────────────────────────────────────── */
-function Reveal({ children, delay = 0, className = "" }) {
+function Reveal({ children, delay = 0, className = "", style = {} }) {
   const [ref, inView] = useInView();
   return (
     <div ref={ref} className={className} style={{
@@ -316,6 +313,7 @@ function Reveal({ children, delay = 0, className = "" }) {
       transform: inView ? "translateY(0)" : "translateY(32px)",
       transition: `opacity 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s,
                    transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      ...style,
     }}>
       {children}
     </div>
@@ -454,7 +452,6 @@ function Hero() {
       padding: "clamp(5rem,10vh,8rem) clamp(1.25rem,5vw,3rem) clamp(3rem,6vh,5rem)",
       position: "relative", overflow: "hidden",
     }}>
-      {/* Radial glows (hero-specific, layered over canvas) */}
       <div style={{
         position: "absolute", top: "30%", left: "20%", width: 500, height: 500,
         background: "radial-gradient(circle, rgba(56,182,255,0.07) 0%, transparent 70%)",
@@ -473,7 +470,6 @@ function Hero() {
         display: "grid", gridTemplateColumns: "1fr auto", gap: "3rem", alignItems: "center",
         overflow: "hidden",
       }} className="hero-grid">
-        {/* LEFT */}
         <div style={{ minWidth: 0 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
@@ -581,7 +577,6 @@ function Hero() {
           </div>
         </div>
 
-        {/* RIGHT — Stats */}
         <div style={{
           display: "flex", flexDirection: "column", gap: "0.75rem", minWidth: 220,
         }} className="hero-stats">
@@ -592,7 +587,6 @@ function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <div style={{
         position: "absolute", bottom: "2rem", left: "50%",
         display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
@@ -625,13 +619,10 @@ function Hero() {
   );
 }
 
-/* ─── SECTION WRAPPER (garante transparência com z-index correto) ───── */
+/* ─── SECTION WRAPPER ───────────────────────────────────────────────── */
 function Section({ id, style = {}, children }) {
   return (
-    <section id={id} style={{
-      position: "relative", zIndex: 1,
-      ...style,
-    }}>
+    <section id={id} style={{ position: "relative", zIndex: 1, ...style }}>
       {children}
     </section>
   );
@@ -642,9 +633,7 @@ function BentoCard({ children, accent = false }) {
   return (
     <div style={{
       padding: "clamp(1.25rem,3vw,1.75rem)",
-      background: accent
-        ? "rgba(12,22,38,0.82)"
-        : "rgba(8,15,28,0.78)",
+      background: accent ? "rgba(12,22,38,0.82)" : "rgba(8,15,28,0.78)",
       border: `1px solid ${accent ? "rgba(56,182,255,0.22)" : "var(--border)"}`,
       borderRadius: 18, height: "100%",
       backdropFilter: "blur(14px)",
@@ -687,13 +676,13 @@ const SKILL_CARDS = [
     color: "#00D4FF",
   },
   {
-    icon: ICONS.tool, title: "Ferramentas", wide:true,
+    icon: ICONS.tool, title: "Ferramentas", wide: true,
     desc: "Fluxo de trabalho profissional com versionamento, design e produtividade.",
     tags: ["Git/GitHub", "Pacote Office", "Design Gráfico", "VS Code"],
     color: "#00FF88",
   },
   {
-    icon: ICONS.globe, title: "Idiomas", wide:true,
+    icon: ICONS.globe, title: "Idiomas", wide: true,
     desc: "Comunicação técnica fluente em ambiente global.",
     tags: ["Português Nativo", "English Fluent"],
     color: "#FFB347",
@@ -788,9 +777,25 @@ function Skills() {
 }
 
 /* ─── PROJECTS ──────────────────────────────────────────────────────── */
+
+/*
+  ── COMO ADICIONAR VÍDEO ──────────────────────────────────────────────
+  Adicione a propriedade `videoUrl` em qualquer projeto abaixo.
+  Coloque o arquivo em /public/videos/ e referencie como "/videos/nome.mp4".
+  Projetos sem videoUrl continuam funcionando normalmente.
+
+  Exemplo:
+    videoUrl: "/videos/cuidadosamente-demo.mp4",
+
+  Recomendações para o vídeo:
+  - Formato: MP4 (H.264)
+  - Resolução: 400×700px (vertical) ou proporcional
+  - Tamanho: até 10MB (comprime com HandBrake ou ffmpeg)
+  - Duração: 30–90 segundos em loop
+*/
 const PROJECTS = [
   {
-    num: "01", featured: true,
+    num: "01",
     tags: ["React", "TypeScript", "Vite", "Supabase", "PostgreSQL", "RLS", "RBAC"],
     title: "Gestão Clínica — Espaço CuidadosaMente",
     desc: "Solução fullstack robusta que digitalizou completamente a operação da clínica, automatizando agendamentos, controle financeiro e gestão de pacientes.",
@@ -798,41 +803,10 @@ const PROJECTS = [
     result: "Operação totalmente digitalizada",
     link: "https://github.com/luiz-grz/sistemaespacocuidadosamente",
     color: "var(--elec)",
+    // videoUrl: "/videos/cuidadosamente-demo.mp4",
   },
   {
-    num: "02", featured: false,
-    tags: ["HTML", "CSS", "JavaScript"],
-    title: "Site Institucional — CuidadosaMente",
-    desc: "Site institucional integrando identidade visual da clínica com funcionalidades de suporte interno e atendimento ao cliente.",
-    problem: "Presença digital inexistente",
-    result: "Identidade digital completa",
-    link: "https://github.com/luiz-grz/espa-o-cuidadosamente",
-    liveUrl: "https://espacocuidadosamentesite.netlify.app/",
-    color: "#FFB347",
-  },
-  {
-    num: "03", featured: false,
-    tags: ["HTML", "CSS", "JavaScript"],
-    title: "Calculadora de IP",
-    desc: "Ferramenta para cálculo de sub-redes, máscaras e intervalos de IP, focada em eficiência operacional para profissionais de infraestrutura.",
-    problem: "Cálculos manuais lentos",
-    result: "Ferramenta ágil e precisa",
-    link: "https://github.com/luiz-grz/calculadora-ip",
-    color: "#00D4FF",
-  },
-  {
-    num: "04", featured: false,
-    tags: ["HTML", "CSS", "JavaScript"],
-    title: "DOGO-WORLD",
-    desc: "Jogo 2D com animações de personagens e cenário, demonstrando domínio em estruturação de layout e design moderno.",
-    problem: "Aprendizado via projeto prático",
-    result: "Jogo publicado e funcional",
-    link: "https://github.com/luiz-grz/DOGO-WORLD",
-    liveUrl: "https://the-dogo-world.netlify.app/",
-    color: "#7B61FF",
-  },
-  {
-    num: "05", featured: false,
+    num: "02",
     tags: ["HTML", "CSS", "JavaScript"],
     title: "Study Math",
     desc: "Plataforma educacional para reforço escolar com design responsivo e elementos interativos, voltada ao aprendizado de matemática.",
@@ -841,6 +815,42 @@ const PROJECTS = [
     link: "https://github.com/luiz-grz/StudyMath",
     liveUrl: "https://reforcostudymath.netlify.app/",
     color: "#00FF88",
+    videoUrl: "videos/Study_math (1).mp4",
+  },
+  {
+    num: "03",
+    tags: ["HTML", "CSS", "JavaScript"],
+    title: "Site Institucional — CuidadosaMente",
+    desc: "Site institucional integrando identidade visual da clínica com funcionalidades de suporte interno e atendimento ao cliente.",
+    problem: "Presença digital inexistente",
+    result: "Identidade digital completa",
+    link: "https://github.com/luiz-grz/espa-o-cuidadosamente",
+    liveUrl: "https://espacocuidadosamentesite.netlify.app/",
+    color: "#FFB347",
+    videoUrl: "videos/site_espaco.mp4",
+  },
+  {
+    num: "04",
+    tags: ["HTML", "CSS", "JavaScript"],
+    title: "DOGO-WORLD",
+    desc: "Jogo 2D com animações de personagens e cenário, demonstrando domínio em estruturação de layout e design moderno.",
+    problem: "Aprendizado via projeto prático",
+    result: "Jogo publicado e funcional",
+    link: "https://github.com/luiz-grz/DOGO-WORLD",
+    liveUrl: "https://the-dogo-world.netlify.app/",
+    color: "#7B61FF",
+    videoUrl: "videos/dogo-world.mp4",
+  },
+  {
+    num: "05",
+    tags: ["HTML", "CSS", "JavaScript"],
+    title: "Calculadora de IP",
+    desc: "Ferramenta para cálculo de sub-redes, máscaras e intervalos de IP, focada em eficiência operacional para profissionais de infraestrutura.",
+    problem: "Cálculos manuais lentos",
+    result: "Ferramenta ágil e precisa",
+    link: "https://github.com/luiz-grz/calculadora-ip",
+    color: "#00D4FF",
+    // videoUrl: "/videos/calculadora-ip-demo.mp4",
   },
 ];
 
@@ -867,40 +877,146 @@ function LinkButton({ href, icon, label, color }) {
   );
 }
 
-function ProjectCard({ project, featured }) {
+/* ─── VIDEO PANEL ────────────────────────────────────────────────────── */
+function VideoPanel({ videoUrl, color, hovered }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (hovered) {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [hovered]);
+
+  const corners = [
+    { top: 8,    left: 8,  borderWidth: "1px 0 0 1px" },
+    { top: 8,    right: 8, borderWidth: "1px 1px 0 0" },
+    { bottom: 8, left: 8,  borderWidth: "0 0 1px 1px" },
+    { bottom: 8, right: 8, borderWidth: "0 1px 1px 0" },
+  ];
+
+  return (
+    <div style={{
+      position: "relative",
+      width: "100%",
+      aspectRatio: "16/9",
+      borderRadius: 14,
+      overflow: "hidden",
+      border: `1px solid ${color}30`,
+      background: "rgba(5,12,26,0.9)",
+      opacity: hovered ? 1 : 0,
+      transform: hovered ? "translateX(0) scale(1)" : "translateX(16px) scale(0.97)",
+      transition: "opacity 0.45s cubic-bezier(0.16,1,0.3,1), transform 0.45s cubic-bezier(0.16,1,0.3,1)",
+    }}>
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        muted
+        loop
+        playsInline
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "contain",
+          display: "block",
+          borderRadius: 14,
+        }}
+      />
+
+      {/* scanlines overlay */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: 14, pointerEvents: "none",
+        background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.035) 2px, rgba(0,0,0,0.035) 4px)",
+      }} />
+
+      {/* label DEMO */}
+      <div style={{
+        position: "absolute", top: 12, left: 12,
+        display: "flex", alignItems: "center", gap: 5,
+        background: "rgba(5,12,26,0.75)",
+        backdropFilter: "blur(8px)",
+        padding: "3px 8px", borderRadius: 5,
+        border: `1px solid ${color}25`,
+      }}>
+        <div style={{
+          width: 5, height: 5, borderRadius: "50%",
+          background: color,
+          boxShadow: `0 0 6px ${color}`,
+          animation: hovered ? "pulse-glow 1.5s ease-in-out infinite" : "none",
+        }} />
+        <span style={{
+          fontFamily: "var(--font-mono)", fontSize: "0.58rem",
+          color, letterSpacing: "0.08em",
+        }}>DEMO</span>
+      </div>
+
+      {/* cantos decorativos */}
+      {corners.map((s, i) => (
+        <div key={i} style={{
+          position: "absolute", width: 12, height: 12,
+          borderColor: color, borderStyle: "solid",
+          opacity: 0.5, ...s,
+        }} />
+      ))}
+    </div>
+  );
+}
+
+/* ─── PROJECT CARD ───────────────────────────────────────────────────── */
+function ProjectCard({ project }) {
   const [hovered, setHovered] = useState(false);
+  const hasVideo = !!project.videoUrl;
+
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        gridColumn: featured ? "span 2" : "span 1",
+        /* ── FLEXBOX em vez de grid: o filho de vídeo anima width sem
+           quebrar o layout ── */
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "stretch",
         padding: "clamp(1.5rem,3vw,2rem)",
         background: "rgba(8,14,28,0.82)",
         border: `1px solid ${hovered ? "rgba(56,182,255,0.3)" : "var(--border)"}`,
-        borderRadius: 20, position: "relative", overflow: "hidden",
+        borderRadius: 20,
+        position: "relative",
+        /* overflow: hidden removido do card — estava cortando a animação
+           do painel de vídeo antes da transição terminar               */
         backdropFilter: "blur(14px)",
-        transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
+        transition: "border-color 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s",
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
         boxShadow: hovered ? "0 24px 60px rgba(56,182,255,0.10)" : "none",
         cursor: "default",
-      }}
-      className={featured ? "project-featured" : ""}>
+      }}>
 
+      {/* linha topo colorida */}
       <div style={{
         position: "absolute", top: 0, left: 0, right: 0, height: 2,
+        borderRadius: "20px 20px 0 0",
         background: `linear-gradient(90deg, transparent, ${project.color}, transparent)`,
-        opacity: hovered ? 1 : 0, transition: "opacity 0.4s",
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.4s",
       }} />
+
+      {/* número decorativo */}
       <div style={{
-        position: "absolute", right: -10, top: -20,
+        position: "absolute", right: hasVideo ? 300 : -10, top: -20,
         fontFamily: "var(--font-head)", fontWeight: 800,
         fontSize: "7rem", color: "rgba(56,182,255,0.04)",
         lineHeight: 1, userSelect: "none",
-        opacity: hovered ? 0.6 : 0.3, transition: "opacity 0.3s",
+        opacity: hovered ? 0.6 : 0.3,
+        transition: "opacity 0.3s, right 0.5s cubic-bezier(0.16,1,0.3,1)",
+        pointerEvents: "none",
       }}>{project.num}</div>
 
-      <div style={{ position: "relative" }}>
+      {/* ── CONTEÚDO PRINCIPAL ── */}
+      <div style={{ flex: 1, minWidth: 0, position: "relative" }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginBottom: "1rem" }}>
           {project.tags.map(t => (
             <span key={t} style={{
@@ -915,15 +1031,15 @@ function ProjectCard({ project, featured }) {
 
         <h3 style={{
           fontFamily: "var(--font-head)", fontWeight: 700,
-          fontSize: featured ? "clamp(1.2rem,2.5vw,1.55rem)" : "1.05rem",
-          color: "var(--text)", marginBottom: "0.75rem", lineHeight: 1.3,
-          letterSpacing: "-0.01em",
+          fontSize: "clamp(1.1rem,2.5vw,1.45rem)",
+          color: "var(--text)", marginBottom: "0.75rem",
+          lineHeight: 1.3, letterSpacing: "-0.01em",
         }}>{project.title}</h3>
 
         <p style={{
           fontFamily: "var(--font-body)", fontSize: "0.85rem",
-          color: "var(--text-dim)", lineHeight: 1.7, marginBottom: "1.25rem",
-          maxWidth: 540,
+          color: "var(--text-dim)", lineHeight: 1.7,
+          marginBottom: "1.25rem", maxWidth: 540,
         }}>{project.desc}</p>
 
         <div style={{
@@ -947,17 +1063,52 @@ function ProjectCard({ project, featured }) {
           }}>{project.result}</span>
         </div>
 
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
           <LinkButton href={project.link} icon={ICONS.github} label="Ver no GitHub" color={project.color} />
           {project.liveUrl && (
             <LinkButton href={project.liveUrl} icon={ICONS.globe} label="Ver Site" color={project.color} />
           )}
+          {hasVideo && !hovered && (
+            <span style={{
+              fontFamily: "var(--font-mono)", fontSize: "0.62rem",
+              color: "var(--muted)", letterSpacing: "0.06em",
+              display: "flex", alignItems: "center", gap: 4,
+              opacity: 0.6,
+            }}>
+              <Icon d={ICONS.play} size={10} color="var(--muted)" />
+              hover para demo
+            </span>
+          )}
         </div>
       </div>
+
+      {/* ── PAINEL DE VÍDEO ──
+          width anima de 0 → 296px (280 + 16 de gap).
+          overflow:hidden no wrapper garante que o conteúdo interno
+          não vaze enquanto ainda está colapsado.                      */}
+      {hasVideo && (
+        <div style={{
+          flexShrink: 0,
+          width: hovered ? 436 : 0,
+          paddingLeft: hovered ? 16 : 0,
+          overflow: "hidden",
+          transition: "width 0.5s cubic-bezier(0.16,1,0.3,1), padding-left 0.5s cubic-bezier(0.16,1,0.3,1)",
+          alignSelf: "center",
+        }}>
+          <div style={{ width: 420 }}>
+            <VideoPanel
+              videoUrl={project.videoUrl}
+              color={project.color}
+              hovered={hovered}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
+/* ─── PROJECTS SECTION ───────────────────────────────────────────────── */
 function Projects() {
   return (
     <Section id="projetos" style={{
@@ -978,30 +1129,13 @@ function Projects() {
         </div>
       </Reveal>
 
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(2, 1fr)",
-        gap: "1rem",
-      }} className="projects-grid">
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {PROJECTS.map((p, i) => (
-          <Reveal key={p.num} delay={i * 0.08}
-            className={p.featured ? "project-featured-wrap" : ""}>
-            <ProjectCard project={p} featured={p.featured} />
+          <Reveal key={p.num} delay={i * 0.08}>
+            <ProjectCard project={p} />
           </Reveal>
         ))}
       </div>
-
-      <style>{`
-        .project-featured-wrap { grid-column: span 2; }
-        @media (max-width: 768px) {
-          .projects-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
-          .project-featured { grid-column: span 1 !important; }
-          .project-featured-wrap { grid-column: span 1 !important; }
-        }
-        @media (max-width: 480px) {
-          .projects-grid { gap: 0.5rem !important; }
-        }
-      `}</style>
     </Section>
   );
 }
@@ -1128,7 +1262,7 @@ function About() {
       </div>
 
       <style>{`
-        @media (max-width: 860px) { 
+        @media (max-width: 860px) {
           .about-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
         }
         @media (max-width: 480px) {
@@ -1141,10 +1275,10 @@ function About() {
 
 /* ─── CONTACT ────────────────────────────────────────────────────────── */
 const CONTACTS = [
-  { icon: ICONS.mail,     label: "Email",     value: "luizeduardogrz@gmail.com",   href: "mailto:luizeduardogrz@gmail.com",              color: "var(--elec)" },
-  { icon: ICONS.linkedin, label: "LinkedIn",  value: "/in/luizeduardorgarcez",     href: "https://www.linkedin.com/in/luizeduardorgarcez/", color: "#0A66C2" },
-  { icon: ICONS.github,   label: "GitHub",    value: "github.com/luiz-grz",        href: "https://github.com/luiz-grz",                  color: "#E8F0FF" },
-  { icon: ICONS.phone,    label: "WhatsApp",  value: "(21) 98426-3590",            href: "tel:+5521984263590",                            color: "#25D366" },
+  { icon: ICONS.mail,     label: "Email",    value: "luizeduardogrz@gmail.com",    href: "mailto:luizeduardogrz@gmail.com",               color: "var(--elec)" },
+  { icon: ICONS.linkedin, label: "LinkedIn", value: "/in/luizeduardorgarcez",      href: "https://www.linkedin.com/in/luizeduardorgarcez/", color: "#0A66C2" },
+  { icon: ICONS.github,   label: "GitHub",   value: "github.com/luiz-grz",         href: "https://github.com/luiz-grz",                   color: "#E8F0FF" },
+  { icon: ICONS.phone,    label: "WhatsApp", value: "(21) 98426-3590",             href: "tel:+5521984263590",                             color: "#25D366" },
 ];
 
 function Contact() {
@@ -1215,7 +1349,7 @@ function Contact() {
       </div>
 
       <style>{`
-        @media (max-width: 560px) { 
+        @media (max-width: 560px) {
           .contact-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
         }
         @media (max-width: 360px) {
@@ -1264,13 +1398,8 @@ export default function App() {
 
   return (
     <>
-      {/* Canvas fica fora do flow, fixed, atrás de tudo */}
       <GlobalBackground />
-      
-      {/* Cursor Interativo */}
       <InteractiveCursor />
-
-      {/* Wrapper principal sem background para deixar canvas aparecer */}
       <div style={{ minHeight: "100vh", position: "relative" }}>
         <Nav />
         <Hero />
