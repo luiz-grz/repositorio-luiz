@@ -587,15 +587,7 @@ function Hero() {
         </div>
       </div>
 
-      <div style={{
-        position: "absolute", bottom: "2rem", left: "50%",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-        animation: "bounce 2.5s ease-in-out infinite", zIndex: 2,
-      }}>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem",
-          color: "var(--muted)", letterSpacing: "0.12em" }}>SCROLL</span>
-        <Icon d={ICONS.chevdown} size={16} color="var(--muted)" />
-      </div>
+      
 
       <style>{`
         @media (max-width: 900px) {
@@ -670,29 +662,31 @@ const SKILL_CARDS = [
     color: "#7B61FF",
   },
   {
-    icon: ICONS.wifi, title: "Infraestrutura",
-    desc: "Monitoramento de redes, alertas em tempo real e documentação técnica.",
-    tags: ["Zabbix", "Grafana", "GPON", "Switches L2VPN", "HTTP", "Redes Wireless"],
-    color: "#00D4FF",
-  },
-  {
-    icon: ICONS.tool, title: "Ferramentas", wide: true,
+    icon: ICONS.tool, title: "Ferramentas", 
     desc: "Fluxo de trabalho profissional com versionamento, design e produtividade.",
     tags: ["Git/GitHub", "Pacote Office", "Design Gráfico", "VS Code"],
     color: "#00FF88",
   },
   {
-    icon: ICONS.globe, title: "Idiomas", wide: true,
-    desc: "Comunicação técnica fluente em ambiente global.",
-    tags: ["Português Nativo", "English Fluent"],
-    color: "#FFB347",
+    icon: ICONS.wifi, title: "Infraestrutura", wide: true,
+    desc: "Monitoramento de redes, alertas em tempo real e documentação técnica.",
+    tags: ["Zabbix", "Grafana", "GPON", "Switches L2VPN", "HTTP", "Redes Wireless"],
+    color: "#00D4FF",
   },
+  
   {
-    icon: ICONS.book, title: "Formação",
+    icon: ICONS.book, title: "Formação", wide: true,
     desc: "Graduação em andamento com base sólida em computação e sistemas.",
     tags: ["Sistemas de Informação", "Unilasalle-RJ", "3° Período — 2026"],
     color: "#FF6B9D",
   },
+  {
+    icon: ICONS.globe, title: "Idiomas", 
+    desc: "Comunicação técnica fluente em ambiente global.",
+    tags: ["Português Nativo", "English Fluent"],
+    color: "#FFB347",
+  },
+  
 ];
 
 function Skills() {
@@ -1173,6 +1167,50 @@ function About() {
         display: "grid", gridTemplateColumns: "3fr 2fr", gap: "3rem", alignItems: "start",
       }} className="about-grid">
         <div>
+         {/* ── FOTO DE PERFIL ── */}
+          <Reveal>
+            <div style={{
+              display: "flex", alignItems: "center", gap: "1.25rem",
+              marginBottom: "2rem", paddingBottom: "2rem",
+              borderBottom: "1px solid var(--border)",
+            }}>
+              <div style={{ position: "relative", flexShrink: 0 }}>
+                <img
+                  src="/public/videos/imagens/eu/1768396144456.jpg"
+                  alt="Luiz Eduardo Garcez"
+                  style={{
+                    width: 190, height: 190,
+                    borderRadius: "70%",
+                    border: "4px solid var(--elec)",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
+                <span style={{
+                  position: "absolute", bottom: 5, right: 19,
+                  width: 20, height: 20, borderRadius: "50%",
+                  background: "#00FF88",
+                  border: "2px solid var(--bg)",
+                  animation: "pulse-glow 2s ease-in-out infinite",
+                }} />
+              </div>
+              <div>
+                <div style={{
+                  fontFamily: "var(--font-head)", fontWeight: 700,
+                  fontSize: "1rem", color: "var(--text)", marginBottom: 3,
+                }}>Luiz Eduardo Garcez</div>
+                <div style={{
+                  fontFamily: "var(--font-mono)", fontSize: "0.72rem",
+                  color: "var(--elec)", marginBottom: 5,
+                }}>Fullstack Developer + Infra</div>
+                <div style={{
+                  fontFamily: "var(--font-mono)", fontSize: "0.65rem",
+                  color: "var(--muted)",
+                }}>Niterói, RJ</div>
+              </div>
+            </div>
+          </Reveal>
+
           {[
             { label: "Quem sou", text: "Sou um desenvolvedor fullstack em formação, movido pela curiosidade de entender sistemas de ponta a ponta — desde a interface que o usuário toca até a infraestrutura que suporta tudo por baixo. Atualmente estagiário na Leste Telecom e estudante de Sistemas de Informação." },
             { label: "O que me diferencia", text: "Tenho uma rara combinação entre desenvolvimento web moderno (React, TypeScript, Supabase) e conhecimento prático de infraestrutura de redes (Zabbix, GPON, Switches L2VPN). Isso me permite pensar em soluções que vão além da tela." },
