@@ -1176,7 +1176,7 @@ function About() {
             }}>
               <div style={{ position: "relative", flexShrink: 0 }}>
                 <img
-                  src="/public/videos/imagens/eu/1768396144456.jpg"
+                  src="/videos/imagens/eu/1768396144456.jpg"
                   alt="Luiz Eduardo Garcez"
                   style={{
                     width: 190, height: 190,
@@ -1214,7 +1214,7 @@ function About() {
           {[
             { label: "Quem sou", text: "Sou um desenvolvedor fullstack em formação, movido pela curiosidade de entender sistemas de ponta a ponta — desde a interface que o usuário toca até a infraestrutura que suporta tudo por baixo. Atualmente estagiário na Leste Telecom e estudante de Sistemas de Informação." },
             { label: "O que me diferencia", text: "Tenho uma rara combinação entre desenvolvimento web moderno (React, TypeScript, Supabase) e conhecimento prático de infraestrutura de redes (Zabbix, GPON, Switches L2VPN). Isso me permite pensar em soluções que vão além da tela." },
-            { label: "O que busco", text: "Busco minha primeira vaga como desenvolvedor junior ou estágio técnico onde possa crescer rápido, contribuir com produtos reais e evoluir com um time que valoriza qualidade de código e impacto real." },
+            { label: "O que busco", text: "Busco minha primeira vaga como desenvolvedor junior ou estágio técnico onde possa crescer, contribuir com produtos reais e evoluir com um time que valoriza qualidade de código e impacto real." },
           ].map((p, i) => (
             <Reveal key={i} delay={i * 0.12}>
               <div style={{ marginBottom: "1.75rem" }}>
