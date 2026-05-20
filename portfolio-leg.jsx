@@ -471,13 +471,6 @@ function Hero() {
         overflow: "hidden",
       }} className="hero-grid">
         <div style={{ minWidth: 0 }}>
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: 8,
-            padding: "6px 14px",
-            background: "rgba(56,182,255,0.08)", border: "1px solid rgba(56,182,255,0.2)",
-            borderRadius: 100, marginBottom: "1.5rem",
-          }} className="hero-badge">
-          </div>   
 
           <h2 style={{
             fontFamily: "var(--font-head)", fontWeight: 600,
@@ -495,6 +488,7 @@ function Hero() {
             }}>Eduardo</span>
             <span style={{ display: "block" }}>Garcez</span>
           </h2>
+
           <h1 style={{
             fontFamily: "var(--font-head)", fontWeight: 800,
             fontSize: "clamp(1.8rem, 5.5vw, 5.2rem)",
@@ -579,8 +573,6 @@ function Hero() {
         </div>
       </div>
 
-      
-
       <style>{`
         @media (max-width: 900px) {
           .hero-grid { grid-template-columns: 1fr !important; }
@@ -599,7 +591,6 @@ function Hero() {
           #hero { padding: 6rem 1rem 2rem !important; }
         }
       `}</style>
-      </div>
     </section>
   );
 }
