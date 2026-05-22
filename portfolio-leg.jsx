@@ -646,7 +646,7 @@ const SKILL_CARDS = [
     color: "#7B61FF",
   },
   {
-    icon: ICONS.tool, title: "Ferramentas", 
+    icon: ICONS.tool, title: "Ferramentas",
     desc: "Fluxo de trabalho profissional com versionamento, design e produtividade.",
     tags: ["Git/GitHub", "Pacote Office", "Design Gráfico", "VS Code"],
     color: "#00FF88",
@@ -657,7 +657,6 @@ const SKILL_CARDS = [
     tags: ["Zabbix", "Grafana", "GPON", "Switches L2VPN", "HTTP", "Redes Wireless"],
     color: "#00D4FF",
   },
-  
   {
     icon: ICONS.book, title: "Formação", wide: true,
     desc: "Graduação em andamento com base sólida em computação e sistemas.",
@@ -665,12 +664,11 @@ const SKILL_CARDS = [
     color: "#FF6B9D",
   },
   {
-    icon: ICONS.globe, title: "Idiomas", 
+    icon: ICONS.globe, title: "Idiomas",
     desc: "Comunicação técnica fluente em ambiente global.",
     tags: ["Português Nativo", "English Fluent"],
     color: "#FFB347",
   },
-  
 ];
 
 function Skills() {
@@ -779,7 +777,6 @@ const PROJECTS = [
     desc: "Solução fullstack robusta que digitalizou completamente a operação da clínica, automatizando agendamentos, controle financeiro e gestão de pacientes.",
     problem: "Processos 100% manuais em papel",
     result: "Operação totalmente digitalizada",
-    link: "https://github.com/luiz-grz/sistemaespacocuidadosamente",
     color: "var(--elec)",
     videoUrl: "/videos/sistema_espaco.mp4",
   },
@@ -954,8 +951,6 @@ function ProjectCard({ project }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        /* ── FLEXBOX em vez de grid: o filho de vídeo anima width sem
-           quebrar o layout ── */
         display: "flex",
         flexDirection: "row",
         alignItems: "stretch",
@@ -964,8 +959,6 @@ function ProjectCard({ project }) {
         border: `1px solid ${hovered ? "rgba(56,182,255,0.3)" : "var(--border)"}`,
         borderRadius: 20,
         position: "relative",
-        /* overflow: hidden removido do card — estava cortando a animação
-           do painel de vídeo antes da transição terminar               */
         backdropFilter: "blur(14px)",
         transition: "border-color 0.4s, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s",
         transform: hovered ? "translateY(-4px)" : "translateY(0)",
@@ -1042,7 +1035,9 @@ function ProjectCard({ project }) {
         </div>
 
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-          <LinkButton href={project.link} icon={ICONS.github} label="Ver no GitHub" color={project.color} />
+          {project.link && (
+            <LinkButton href={project.link} icon={ICONS.github} label="Ver no GitHub" color={project.color} />
+          )}
           {project.liveUrl && (
             <LinkButton href={project.liveUrl} icon={ICONS.globe} label="Ver Site" color={project.color} />
           )}
@@ -1060,10 +1055,7 @@ function ProjectCard({ project }) {
         </div>
       </div>
 
-      {/* ── PAINEL DE VÍDEO ──
-          width anima de 0 → 296px (280 + 16 de gap).
-          overflow:hidden no wrapper garante que o conteúdo interno
-          não vaze enquanto ainda está colapsado.                      */}
+      {/* ── PAINEL DE VÍDEO ── */}
       {hasVideo && (
         <div style={{
           flexShrink: 0,
@@ -1151,7 +1143,7 @@ function About() {
         display: "grid", gridTemplateColumns: "3fr 2fr", gap: "3rem", alignItems: "start",
       }} className="about-grid">
         <div>
-         {/* ── FOTO DE PERFIL ── */}
+          {/* ── FOTO DE PERFIL ── */}
           <Reveal>
             <div style={{
               display: "flex", alignItems: "center", gap: "1.25rem",
@@ -1326,7 +1318,7 @@ function Contact() {
               color: "var(--text-dim)", marginTop: "1rem", maxWidth: 480, margin: "1rem auto 0",
               lineHeight: 1.75,
             }}>
-              Estou aberto a novas conexões, projetos e oportunidades que me desafiem a crescer. 
+              Estou aberto a novas conexões, projetos e oportunidades que me desafiem a crescer.
               Se quiser conversar sobre tecnologia, colaborar em algo ou apenas trocar uma ideia.
             </p>
             <p style={{
@@ -1336,7 +1328,6 @@ function Contact() {
             }}>
               Entre em contato pelo canal que preferir.
             </p>
-            
           </div>
         </Reveal>
 
