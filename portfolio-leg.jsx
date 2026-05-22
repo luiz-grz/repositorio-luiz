@@ -1292,7 +1292,7 @@ const CONTACTS = [
   { icon: ICONS.mail,     label: "Email",    value: "luizeduardogrz@gmail.com",    href: "mailto:luizeduardogrz@gmail.com",               color: "var(--elec)" },
   { icon: ICONS.linkedin, label: "LinkedIn", value: "/in/luizeduardorgarcez",      href: "https://www.linkedin.com/in/luizeduardorgarcez/", color: "#0A66C2" },
   { icon: ICONS.github,   label: "GitHub",   value: "github.com/luiz-grz",         href: "https://github.com/luiz-grz",                   color: "#E8F0FF" },
-  { icon: ICONS.phone,    label: "WhatsApp", value: "(21) 98426-3590",             href: "tel:+5521984263590",                             color: "#25D366" },
+  { icon: ICONS.phone,    label: "WhatsApp", value: "(21) 98426-3590",             href: "https://wa.me/5521984263590",                             color: "#25D366" },
 ];
 
 function Contact() {
